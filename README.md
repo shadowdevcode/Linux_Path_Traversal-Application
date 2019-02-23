@@ -1,13 +1,17 @@
 # Created python executable file using following steps:
+
 1. Add #!/usr/bin/env python3 at the top of the file.
 2. Change the extension of file from .py to .command
 3. chmod +x file_name.command
 4. Run the file.
 
 # How to Run?
+
 Click on the binary file.
 
-# Output:
+## Output:
+>
+```
 INFO - COMMANDS TO USE : mkdir, ls, cd, pwd, rm, session_clear, exit
 <Starting your application...>
 $ pwd
@@ -31,3 +35,4 @@ $ session_clear
 SUCC: CLEARED: RESET TO ROOT
 $ arf
 ERR: COMMANDS DOES NOT EXIST!
+```
