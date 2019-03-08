@@ -6,7 +6,7 @@
 # current_path = [] or ["", "root"]
 
 dict_path = {
-    "root": ["", "root"],
+    "root": ["" , "root"],
     "current_path": [] or ["", "root"],
     "dirs": [],
     "path": []
@@ -23,8 +23,8 @@ def mkdir():
             print("ERR: DIRECTORY ALREADY EXISTS")
     else:
         dict_path["dirs"].append(dir)
-        print("SUCC: CREATED")
         dict_path["path"].append(dir)
+        print("SUCC: CREATED")
 
 
 """
@@ -34,9 +34,7 @@ def mkdir():
 def ls():
     if dict_path["path"] == dict_path["root"]:
         dict_path["path"] = dict_path["dirs"]
-        # dict_path["path"] = dict_path["path"]
-    print("DIRS: ")
-    print(*dict_path["path"], sep="\t")
+    print("DIRS: ", *dict_path["path"], sep="\t")
 
 
 """
@@ -75,7 +73,6 @@ def rm():
     global dict_path
     if dir in dict_path["dirs"]:
         dict_path["dirs"].remove(dir)
-        dict_path["path"].remove(dir)
         print("SUCC: DELETED")
     else:
         print("ERR: DIRECTORY DOES NOT EXIST")
@@ -89,7 +86,7 @@ def session_clear():
     global dict_path
     dict_path["dirs"].clear()
     dict_path["current_path"].clear()
-    dict_path["current_path"] = dict_path["root"] or dict_path[""]
+    dict_path["current_path"] = dict_path["root"]
     dict_path["path"].clear()
     print("SUCC: CLEARED: RESET TO ROOT")
 
@@ -120,7 +117,7 @@ print("INFO - COMMANDS TO USE : mkdir, ls, cd, pwd, rm, session_clear, exit")
 print("<Starting your application...>")
 
 while True:
-    char = input("$:")
+    char = input("$: ")
     command_list = []
     command_list.append(char.split(" "))
     char = command_list[0][0]
