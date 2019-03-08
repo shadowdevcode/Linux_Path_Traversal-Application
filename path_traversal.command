@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 
-root = ["", "root"]
-dirs = []
-path = []
-current_path = [] or ["", "root"]
+# root = ["", "root"]
+# dirs = []
+# path = []
+# current_path = [] or ["", "root"]
+
+dict_path = {
+    "root": ["", "root"],
+    "current_path": [] or ["", "root"],
+    "dirs": [],
+    "path": []
+}
 
 
 """
@@ -11,13 +18,13 @@ current_path = [] or ["", "root"]
  * [dirs delared global list for directories]
 """
 def mkdir():
-    global dirs
-    if dir in dirs:
-        print("ERR: DIRECTORY ALREADY EXISTS")
+    global dict_path
+    if dir in dict_path["path"] and dir in dict_path["dirs"]:
+            print("ERR: DIRECTORY ALREADY EXISTS")
     else:
-        dirs.append(dir)
-        path.append(dir)
+        dict_path["dirs"].append(dir)
         print("SUCC: CREATED")
+        dict_path["path"].append(dir)
 
 
 """
@@ -25,12 +32,11 @@ def mkdir():
  * path declared globally
 """
 def ls():
-    global path
-    if path == root:
-        path = dirs
-        path = path[0]
+    if dict_path["path"] == dict_path["root"]:
+        dict_path["path"] = dict_path["dirs"]
+        # dict_path["path"] = dict_path["path"]
     print("DIRS: ")
-    print(*path, sep="\t")
+    print(*dict_path["path"], sep="\t")
 
 
 """
@@ -38,24 +44,15 @@ def ls():
  * current_path, dir, path declared globally
 """
 def cd():
-    global current_path, dir, path
+    global dict_path
     if dir == "":
-        current_path = root
-        path = root
-    elif dir in dirs:
-        current_path.append(dir)
-        path.clear()
-    elif dir == "..":
-        current_path.pop()
-        print("SUCC: REACHED")
-        print(*current_path, sep="/")
-        i = len(dirs) - 1
-        if dirs[i] in path:
-            i = i - 1
-            path.pop()
-            path.append(dirs[i])
-        else:
-            path.append(dirs[i])
+        dict_path["current_path"] = dict_path["root"]
+        dict_path["path"] = dict_path["root"]
+        print("ENTERED IN ROOT DIRECTORY")
+    elif dir in dict_path["dirs"] and dir in dict_path["path"]:
+        dict_path["current_path"].append(dir)
+        dict_path["path"].clear()
+        print("ENTERED IN DIRECTORY: ", dict_path["current_path"])
     else:
         print("ERR: INVALID PATH")
 
@@ -65,9 +62,9 @@ def cd():
  * current_path declared globally
 """
 def pwd():
-    global current_path
+    global dict_path
     print("PATH: ")
-    print(*current_path, sep="/")
+    print(*dict_path["current_path"], sep="/")
 
 
 """
@@ -75,12 +72,11 @@ def pwd():
  * dirs declared globabally
 """
 def rm():
-    global dirs
-    if dir in dirs:
-        dirs.remove(dir)
-        if dir in path:
-            print("SUCC: DELETED")
-            path.remove(dir)
+    global dict_path
+    if dir in dict_path["dirs"]:
+        dict_path["dirs"].remove(dir)
+        dict_path["path"].remove(dir)
+        print("SUCC: DELETED")
     else:
         print("ERR: DIRECTORY DOES NOT EXIST")
 
@@ -90,13 +86,11 @@ def rm():
  * dirs, current_path, path declared globally.
 """
 def session_clear():
-    global dirs
-    dirs.clear()
-    global current_path
-    current_path.clear()
-    current_path = root
-    global path
-    path.clear()
+    global dict_path
+    dict_path["dirs"].clear()
+    dict_path["current_path"].clear()
+    dict_path["current_path"] = dict_path["root"] or dict_path[""]
+    dict_path["path"].clear()
     print("SUCC: CLEARED: RESET TO ROOT")
 
 
@@ -119,14 +113,14 @@ def commands(argument):
         # Execute the function
         func()
     else:
-        print("ERR: COMMANDS DOES NOT EXIST!")
+        print("ERR: COMMAND ENTERED DOES NOT EXIST!")
 
 
 print("INFO - COMMANDS TO USE : mkdir, ls, cd, pwd, rm, session_clear, exit")
 print("<Starting your application...>")
 
 while True:
-    char = input("$: ")
+    char = input("$:")
     command_list = []
     command_list.append(char.split(" "))
     char = command_list[0][0]
